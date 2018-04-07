@@ -1,2 +1,0 @@
-# BoxBoxGame
-Default

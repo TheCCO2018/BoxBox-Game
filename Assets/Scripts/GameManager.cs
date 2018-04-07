@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour {
     public int currentBoxType = 0;
 
 
+    SoundManager _soundManager;
+
+
     [SerializeField]
     Text WarningPanel;
 
@@ -35,6 +38,7 @@ public class GameManager : MonoBehaviour {
     //HighScore bilgisi var ise oyun başladığında ekranda bu bilgiyi gösteriyoruz.
     void Start()
     {
+        _soundManager = GameObject.Find("Sound_Effect_Manager").GetComponent<SoundManager>();
         Screen.SetResolution(1024, 768,false);
         PlayerPrefs.GetInt("Boxtype", 0);
 
@@ -74,13 +78,15 @@ public class GameManager : MonoBehaviour {
 
             WarningPanel.color = HexToRGB("#9A2B05");
             WarningPanel.text = "There is no possible moves left . You are lose :(";
-            if(BoxNumber > PlayerPrefs.GetInt("HighScore"))
+            _soundManager.Play_Sound(1);
+            if (BoxNumber > PlayerPrefs.GetInt("HighScore"))
             {
                 PlayerPrefs.SetInt("HighScore", BoxNumber--);
             }
         }
         else
         {
+            _soundManager.Play_Sound(2);
             WarningPanel.text = movesCount + " moves left !";
             movesCount = 0;
         }
@@ -88,6 +94,7 @@ public class GameManager : MonoBehaviour {
         {
             WarningPanel.color = HexToRGB("#91D147");
             WarningPanel.text = "Congratulations !";
+            _soundManager.Play_Sound(0);
 
             if (BoxNumber > PlayerPrefs.GetInt("HighScore"))
             {
